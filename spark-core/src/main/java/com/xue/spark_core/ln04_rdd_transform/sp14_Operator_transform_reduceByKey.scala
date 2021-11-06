@@ -8,12 +8,17 @@ object sp14_Operator_transform_reduceByKey {
 
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("RDD")
     val sc = new SparkContext(sparkConf)
-    val rdd: RDD[Int] = sc.makeRDD(List(1,2,2,3,3,4,5,5),5)
+    sc.setLogLevel("ERROR")
 
-    //RDD转换算子 coalesce缩减分区 用于大数据过滤后，提高小数据执行效率
-    val rdd1: RDD[Int] = rdd.coalesce(2)
-    val arr: Array[Int] = rdd1.collect()
-    arr.foreach(println)
+    val rdd: RDD[(String, Int)] = sc.makeRDD(
+      List(("china", 1), ("china", 5), ("usa", 2), ("uk",3), ("uk",1)), 2)
+
+    //RDD转换算子 reduceByKey相同key的数据进行value的聚合   每次是2个数据的聚合
+    //reduceByKey可以在shuffle之前进行分区内预聚合，包含分组和聚合功能。
+    val rdd1: RDD[(String, Int)] = rdd.reduceByKey(_ + _)
+
+    val tp: Array[(String, Int)] = rdd1.collect()
+    tp.foreach(println)
 
     sc.stop()
 

@@ -8,12 +8,16 @@ object sp15_Operator_transform_groupByKey {
 
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("RDD")
     val sc = new SparkContext(sparkConf)
-    val rdd: RDD[Int] = sc.makeRDD(List(1,2,2,3,3,4,5,5),5)
+    sc.setLogLevel("ERROR")
 
-    //RDD转换算子 coalesce缩减分区 用于大数据过滤后，提高小数据执行效率
-    val rdd1: RDD[Int] = rdd.coalesce(2)
-    val arr: Array[Int] = rdd1.collect()
-    arr.foreach(println)
+    val rdd: RDD[(String, Int)] = sc.makeRDD(
+      List(("china", 1), ("china", 5), ("usa", 2), ("uk",3), ("uk",1),("china", 2)), 2)
+
+    //RDD转换算子 groupByKey相同key的数据进行分组  分组后键为key；值为原来值的迭代器
+    //groupByKey和reduceByKey都会有shuffle操作，但是groupByKey只有分组的功能
+    val rdd1: RDD[(String, Iterable[Int])] = rdd.groupByKey()
+    val tp: Array[(String, Iterable[Int])] = rdd1.collect()
+    tp.foreach(println)
 
     sc.stop()
 
