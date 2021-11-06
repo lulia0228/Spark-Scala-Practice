@@ -8,13 +8,13 @@ object sp19_Operator_transform_join {
 
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("RDD")
     val sc = new SparkContext(sparkConf)
-    val rdd: RDD[Int] = sc.makeRDD(List(1,2,2,3,3,4,5,5),5)
+    val rdd1: RDD[(String, Int)] = sc.makeRDD(List(("a", 1), ("b", 2), ("c", 3)), 1)
+    val rdd2: RDD[(String, Int)] = sc.makeRDD(List(("b", 10), ("c", 20), ("d", 30)), 1)
 
-    //RDD转换算子 coalesce缩减分区 用于大数据过滤后，提高小数据执行效率
-    val rdd1: RDD[Int] = rdd.coalesce(2)
-    val arr: Array[Int] = rdd1.collect()
-    arr.foreach(println)
-
+    // RDD转换算子 操作2个数据源
+    // join将2个数据源相同key数据的值连接，没有相同key的数据不会出现在最终结果中
+    val tp: RDD[(String, (Int, Int))] = rdd1.join(rdd2)
+    tp.collect().foreach(println)
     sc.stop()
 
   }

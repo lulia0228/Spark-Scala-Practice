@@ -8,13 +8,16 @@ object sp20_Operator_transform_leftOuterJoin {
 
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("RDD")
     val sc = new SparkContext(sparkConf)
-    val rdd: RDD[Int] = sc.makeRDD(List(1,2,2,3,3,4,5,5),5)
+    val rdd1: RDD[(String, Int)] = sc.makeRDD(List(("a", 1), ("b", 2), ("c", 3)), 1)
+    val rdd2: RDD[(String, Int)] = sc.makeRDD(List(("b", 10), ("c", 20),("d", 30)), 1)
 
-    //RDD转换算子 coalesce缩减分区 用于大数据过滤后，提高小数据执行效率
-    val rdd1: RDD[Int] = rdd.coalesce(2)
-    val arr: Array[Int] = rdd1.collect()
-    arr.foreach(println)
-
+    // RDD转换算子 操作2个数据源
+    // leftOuterJoin将2个数据源相同key数据的值连接，没有相同key的数据以左表为主也返回
+    val tp1: RDD[(String, (Int, Option[Int]))] = rdd1.leftOuterJoin(rdd2)
+    tp1.collect().foreach(println)
+    println("============================================")
+    val tp2: RDD[(String, (Option[Int], Int))] = rdd1.rightOuterJoin(rdd2)
+    tp2.collect().foreach(println)
     sc.stop()
 
   }

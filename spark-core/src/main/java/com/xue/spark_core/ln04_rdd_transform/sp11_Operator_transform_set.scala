@@ -13,6 +13,7 @@ object sp11_Operator_transform_set {
     val rdd2: RDD[Int] = sc.makeRDD(List(3,4,5,6),2)
     val rdd3: RDD[String] = sc.makeRDD(List("3","4","5","6"),2)
 
+    //RDD转换算子  操作2个数据源
     //交集
     val val1: RDD[Int] = rdd1.intersection(rdd2)
     //val1.foreach(println)

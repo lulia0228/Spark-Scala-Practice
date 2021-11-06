@@ -8,12 +8,13 @@ object sp21_Operator_transform_cogroup {
 
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("RDD")
     val sc = new SparkContext(sparkConf)
-    val rdd: RDD[Int] = sc.makeRDD(List(1,2,2,3,3,4,5,5),5)
+    val rdd1: RDD[(String, Int)] = sc.makeRDD(List(("a", 1), ("b", 2)), 1)
+    val rdd2: RDD[(String, Int)] = sc.makeRDD(List(("b", 10), ("c", 20),("c", 30)), 2)
 
-    //RDD转换算子 coalesce缩减分区 用于大数据过滤后，提高小数据执行效率
-    val rdd1: RDD[Int] = rdd.coalesce(2)
-    val arr: Array[Int] = rdd1.collect()
-    arr.foreach(println)
+    // RDD转换算子  操作2个数据源
+    // cogroup = connect + group
+    val tp: RDD[(String, (Iterable[Int], Iterable[Int]))] = rdd1.cogroup(rdd2)
+    tp.collect().foreach(println)
 
     sc.stop()
 
