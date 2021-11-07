@@ -1,4 +1,4 @@
-package com.xue.spark_core.ln02_distribute
+package com.xue.spark_core.ln02_distribute_principle
 
 import java.io.{ObjectOutputStream, OutputStream}
 import java.net.Socket

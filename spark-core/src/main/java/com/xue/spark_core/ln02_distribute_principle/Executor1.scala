@@ -1,4 +1,4 @@
-package com.xue.spark_core.ln02_distribute
+package com.xue.spark_core.ln02_distribute_principle
 
 import java.io.{InputStream, ObjectInputStream}
 import java.net.{ServerSocket, Socket}
