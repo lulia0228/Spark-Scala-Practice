@@ -11,6 +11,7 @@ object sp02_acc_intro {
     val rdd: RDD[Int] = sc.makeRDD(List(4,2,3,1),2)
     //spark自带的累加器，创建累加器
     val sumACC: LongAccumulator = sc.longAccumulator(name = "sum")
+    //map是转换算子，不会触发作业执行
     val mapRDD: RDD[Unit] = rdd.map((num: Int) => {
       sumACC.add(num)
     })
