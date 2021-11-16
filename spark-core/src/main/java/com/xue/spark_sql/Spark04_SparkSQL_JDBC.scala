@@ -19,10 +19,10 @@ object Spark04_SparkSQL_JDBC {
         // 读取MySQL数据
         val df: DataFrame = spark.read
                 .format("jdbc")
-                .option("url", "jdbc:mysql://localhost:3306/runnob")
-                .option("driver", "com.mysql.jdbc.Driver")
+                .option("url", "jdbc:mysql://localhost:3306/runoob")
+                .option("driver", "com.mysql.cj.jdbc.Driver") //旧版本驱动:com.mysql.jdbc.Driver
                 .option("user", "root")
-                .option("password", "woshishagua")
+                .option("password", "Lh123456")
                 .option("dbtable", "products")
                 .load()
         df.show
@@ -30,10 +30,10 @@ object Spark04_SparkSQL_JDBC {
         // 保存数据
         df.write
                 .format("jdbc")
-                .option("url", "jdbc:mysql://localhost:3306/runnob")
-                .option("driver", "com.mysql.jdbc.Driver")
+                .option("url", "jdbc:mysql://localhost:3306/runoob")
+                .option("driver", "com.mysql.cj.jdbc.Driver")
                 .option("user", "root")
-                .option("password", "woshishagua")
+                .option("password", "Lh123456")
                 .option("dbtable", "products1")
                 .mode(SaveMode.Append)
                 .save()
