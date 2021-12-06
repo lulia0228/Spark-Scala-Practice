@@ -100,7 +100,7 @@ object Spark06_SparkSQL_Hive4 {
 //            }
             map2.foreach{
                 case (city , cnt) => {
-                    val newCount = map1.getOrElse(city, 0L) + cnt
+                    val newCount: Long = map1.getOrElse(city, 0L) + cnt
                     map1.update(city, newCount)
                 }
             }

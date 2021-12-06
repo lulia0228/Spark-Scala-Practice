@@ -3,8 +3,9 @@ package com.xue.spark_sql
 import org.apache.spark.SparkConf
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
+import java.io.Serializable
 
-object sp02_SparkSQL_UDF {
+object sp02_SparkSQL_UDF extends Serializable{
   def main(args: Array[String]): Unit = {
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("sparkSQL")
     val sparkSession: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
