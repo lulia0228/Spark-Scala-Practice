@@ -3,6 +3,13 @@ package com.xue.spark_sql
 import org.apache.spark.SparkConf
 import org.apache.spark.sql._
 
+/**
+ * 本机 去hadoop安装目录sbin下./start-all.sh启动hadoop,如果启动不了namenode，
+ * 去libexec/bin下格式化一下  hdfs namenode -format , 应该已经通过core-site.xml解决了
+ * 在浏览器中打开Resource Manager输入如下网址:http://localhost:9870/ 3.0以上端口移到9870
+ * http://localhost:8042/ 可以看到节点信息和RM Home(http://liheng26demacbook-pro.local:8088/cluster)
+ */
+
 object Spark05_SparkSQL_Hive1 {
 
     def main(args: Array[String]): Unit = {
