@@ -4,12 +4,24 @@ import org.apache.spark.SparkConf
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.functions._
+
 object sp01_SparkSQL_intro {
   def main(args: Array[String]): Unit = {
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("sparkSQL")
     val sparkSession: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
     val df: DataFrame = sparkSession.read.json("datas/user.json")
-    //df.show()
+
+    //映射成新的df
+    import sparkSession.implicits._
+    val dset1: Dataset[(String, String, String)] = df.map(e => (
+      if (e.isNullAt(0)) "100" else e.getAs[Long]("age").toString,
+      if (e.isNullAt(1)) "100" else e.getAs[String]("sex"),
+      "call"
+    ))
+    dset1.show()
 
     //1.1 用SQL操作DataFrame
     df.createOrReplaceTempView("user")
